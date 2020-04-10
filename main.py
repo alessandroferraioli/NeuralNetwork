@@ -1,5 +1,7 @@
 from Nn import *
 
+neural = Nn(3,2,1)
 
-n1 = Nn(3,3,3)
-print(n1.inputNeurons())
+input = np.array([1,1,1])
+
+print(neural.feedforward(input))
