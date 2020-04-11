@@ -20,7 +20,7 @@ class Nn:
         np.random.seed(123)
         printSplit("Creating NN")
 
-        self.learning_rate = 0.5
+        self.learning_rate = 0.8
 
         self.input_neurons = inputN
         self.hidden_neurons = hiddenN
@@ -53,7 +53,6 @@ class Nn:
         return output
 
 #----------------------------------------------------------------------
-
     def feedforward(self,input):
         
         #input-->hidden--output_hidden
@@ -62,55 +61,61 @@ class Nn:
 
         #output_hidden-->hidden--output
         return output
+
 #----------------------------------------------------------------------
-    def train(self,input_data,target,loop):
-        max_it = 1
-        if(loop == True):
-            max_it = 10000
+    def testDataSet(self,testSets,targets):
+        size = testSets.shape[0]
+        benchmark = 0
+        for i in range(size):
+            #print("Testing the #"+str(i)+" data")
+            testData = (np.transpose(testSets[i]).reshape(self.input_neurons,1)) 
+            guess = self.feedforward(testData)  
+            if(guess>=0.5):
+                guess = 1
+            else:
+                guess = 0
+            if(guess == targets[i]):
+                benchmark +=1
         
-        for i in range(max_it):
-            #Needed to calculate the hidden errors and the output errors for the backstepping
-            weights_output_t = np.transpose(self.weights_o)
-            weights_hidden_t = np.transpose(self.weights_h)
-
-            hidden = self.feedforwardHidden(input_data)
-            output = self.feedforwardOutput(hidden)
-
-            printValue("The NN guessed before train :",output)
-            # Backpropagation
-            output_error = target - output
-
-
-
-            gradients = self.applyFunction(output,False)
-            gradients = np.multiply(gradients,output_error)
-
-            gradients = gradients*self.learning_rate
-
-
-            weights_output_deltas = np.dot(gradients,np.transpose(hidden))
-            if(debug_shape):
-                printValue("weights_output_deltas",weights_output_deltas)
-
-            self.weights_o +=  weights_output_deltas
-            self.bias_output = self.bias_output + gradients
-
-            hidden_errors = weights_output_t.dot(output_error)
-            hidden_gradient = self.applyFunction(hidden,False) * hidden_errors
-            hidden_gradient = hidden_gradient * self.learning_rate
-            weights_hidden_deltas = np.dot(hidden_gradient,np.transpose(input_data))
+        return benchmark
             
-            if(debug_shape):
-                printValue("hidden_gradient",hidden_gradient)
-                printValue("weights_hidden_deltas",weights_hidden_deltas)
 
-            
-            
-            self.weights_h = self.weights_h + weights_hidden_deltas
-            self.bias_hidden = self.bias_hidden + hidden_gradient
+#----------------------------------------------------------------------
+    def trainDataset(self,trainSets,targets):
+        size = trainSets.shape[0]
+        for i in range(size):
+            print("Training the #"+str(i)+" data")
+            trainData = (np.transpose(trainSets[i]).reshape(self.input_neurons,1))            
+            self.train(trainData,targets[i])
 
-            output = self.feedforward(input_data)
-            printValue("The NN guessed after train :",output)
+#----------------------------------------------------------------------
+    def train(self,input_data,target):
+
+        #Needed to calculate the hidden errors and the output errors for the backstepping
+        weights_output_t = np.transpose(self.weights_o)
+        weights_hidden_t = np.transpose(self.weights_h)
+
+        hidden = self.feedforwardHidden(input_data)
+        output = self.feedforwardOutput(hidden)
+
+        #Fixing the weights of hidden->output layer
+        output_error = target - output
+
+        gradients = self.applyFunction(output,False)
+        gradients = np.multiply(gradients,output_error)
+        gradients = gradients*self.learning_rate
+        weights_output_deltas = np.dot(gradients,np.transpose(hidden))
+        self.weights_o +=  weights_output_deltas
+        self.bias_output = self.bias_output + gradients
+
+        #Fixing the weights of input->hidden layer
+        hidden_errors = weights_output_t.dot(output_error)
+
+        hidden_gradient = self.applyFunction(hidden,False) * hidden_errors
+        hidden_gradient = hidden_gradient * self.learning_rate
+        weights_hidden_deltas = np.dot(hidden_gradient,np.transpose(input_data))
+        self.weights_h = self.weights_h + weights_hidden_deltas
+        self.bias_hidden = self.bias_hidden + hidden_gradient
 
         
 
