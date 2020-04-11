@@ -1,7 +1,12 @@
 from Nn import *
 
-neural = Nn(3,2,1)
+neural = Nn(2,2,1)
 
-input = np.array([1,1,1])
+input = np.array([[1],[0]])
+target = np.array([0])
 
-print(neural.feedforward(input))
+neural.train(input,target,True)
+
+input = np.array([[1],[1]])
+target = np.array([1])
+neural.train(input,target,False)
