@@ -2,7 +2,6 @@ import numpy as np
 import math
 import time as time
 
-debug_shape = False
 
 
 def printValue(name,value):
@@ -15,12 +14,12 @@ def printSplit(str):
     print(whatPrint)
 #==================================================================
 class Nn:
-    def __init__(self, inputN, hiddenN, outputN):
+    def __init__(self, inputN, hiddenN, outputN,learning_rate = 0.5,debug_shape = False):
         
         np.random.seed()
         printSplit("Creating NN")
 
-        self.learning_rate = 0.1
+        self.learning_rate = learning_rate
 
         self.input_neurons = inputN
         self.hidden_neurons = hiddenN
@@ -31,8 +30,9 @@ class Nn:
 
         self.weights_h = np.random.rand(hiddenN,inputN)
         self.weights_o = np.random.rand(outputN,hiddenN)
-        
-        if(debug_shape):
+        self.debug_shape = debug_shape
+
+        if(self.debug_shape):
             printValue("self.weights_h ",self.weights_h)
             printValue("self.weights_o ",self.weights_o)
 #----------------------------------------------------------------------
@@ -70,12 +70,13 @@ class Nn:
             #print("Testing the #"+str(i)+" data")
             testData = (np.transpose(testSets[i]).reshape(self.input_neurons,1)) 
             guess = self.feedforward(testData)  
+            print(guess)
             if(guess>=0.5):
                 guess = 1
             else:
                 guess = 0
             if(guess == targets[i]):
-                benchmark +=1
+                 benchmark +=1
         
         return benchmark
             
@@ -147,4 +148,18 @@ class Nn:
 #----------------------------------------------------------------------s
     def sigmoid(self,x):
         return 1 /(1 + math.exp(-x))
+#----------------------------------------------------------------------s
+    @staticmethod
+    def xor(x,y):
+        if(x != y):
+            return 1
+        else: 
+            return 0
+#----------------------------------------------------------------------
+    @staticmethod
+    def mapColor(r,g,b):
+        return '#%02x%02x%02x' % (r, g, b)
+
+    
+    
 #==================================================================
