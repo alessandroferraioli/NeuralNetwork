@@ -1,9 +1,9 @@
 from Nn import *
 
-trainsetSize = 50000
-testsetSize = 1000
+trainsetSize = 1000
+testsetSize = 100
 
-neural = Nn(2,2,1)
+neural = Nn(2,4,1)
 trainSet = np.empty([trainsetSize,2])
 targetTrainSet = np.empty([trainsetSize,1])
 
@@ -30,8 +30,7 @@ for i in range(testsetSize):
     else: 
         targetTestSet[i] = 0
 
-
-neural.trainDataset(trainSet,targetTrainSet)
+neural.trainDataset(trainSet,targetTrainSet,15,200)
 print("Correctly found "+str(neural.testDataSet(testSet,targetTestSet))+" over : "+str(testsetSize))
 
 

@@ -17,10 +17,10 @@ def printSplit(str):
 class Nn:
     def __init__(self, inputN, hiddenN, outputN):
         
-        np.random.seed(123)
+        np.random.seed()
         printSplit("Creating NN")
 
-        self.learning_rate = 0.8
+        self.learning_rate = 0.1
 
         self.input_neurons = inputN
         self.hidden_neurons = hiddenN
@@ -81,12 +81,18 @@ class Nn:
             
 
 #----------------------------------------------------------------------
-    def trainDataset(self,trainSets,targets):
+    def trainDataset(self,trainSets,targets,epoch,batch_size):
         size = trainSets.shape[0]
-        for i in range(size):
-            print("Training the #"+str(i)+" data")
-            trainData = (np.transpose(trainSets[i]).reshape(self.input_neurons,1))            
-            self.train(trainData,targets[i])
+        iterations = size/batch_size
+        for ep in range(epoch):
+            print("==============================================================")
+            for it in range(iterations):
+                print "Training epoch: "+str(ep)+" iteration: "+str(it)
+                currentTrainSet = trainSets[it*batch_size:(it+1)*batch_size]
+                currentTargetSet = targets[it*batch_size:(it+1)*batch_size]
+                for i in range(batch_size):
+                    trainData = (np.transpose(currentTrainSet[i]).reshape(self.input_neurons,1)) 
+                    self.train(trainData,currentTargetSet[i]) 
 
 #----------------------------------------------------------------------
     def train(self,input_data,target):
