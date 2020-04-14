@@ -25,14 +25,14 @@ def main():
     x_test, y_test = mnist.load_testing()
 
     #Converting to the convention for the Nn
-    trainSet = convertDataset(x_train,len(x_train))
+    trainSet = convertDataset(x_train,len(x_train))*1/255
     targetTrains = convertTargets(y_train,len(y_train))
 
-    testSet = convertDataset(x_test,len(x_test))
+    testSet = convertDataset(x_test,len(x_test))*1/255
     targetTest = convertTargets(y_test,len(y_test))
     
-    neural = Nn(784,15,10)
-    neural.trainDataset(trainSet,targetTrains,10,5000)
+    neural = Nn(784,15,10,0.01)
+    neural.trainDataset(trainSet,targetTrains,15,500)
     print("Correctly found : "+ str(neural.testDataSet(testSet,targetTest,"mnist")) +" Overall : " + str(len(x_test)) )
     
 #===================================================================================

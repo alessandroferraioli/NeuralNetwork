@@ -57,11 +57,11 @@ def main():
 
 
     neural = Nn(2,4,1)
-    (trainSet,targetTrainSet) = generateTrainSet(1000)
+    (trainSet,targetTrainSet) = generateTrainSet(10000)
     (testSet,targetTestSet) = generateTestSet(100)
-    neural.trainDataset(trainSet,targetTrainSet,15,100)
+    neural.trainDataset(trainSet,targetTrainSet,10,100)
     print("Benchmark : "+ str(neural.testDataSet(testSet,targetTestSet,"xor")))
-    showImageXOR(neural,600,600,10)
+    showImageXOR(neural,600,600,5)
     
 #===================================================================================
 if __name__ == '__main__':

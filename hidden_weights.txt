@@ -1,4 +1,40 @@
-6.320111881966108847e+00 4.929752641759916898e+00
-6.986943772762192140e+00 -9.933319040174040992e+00
-1.116544884664775594e+01 -9.078768543116533252e+00
-8.582190376358177275e+00 7.396495818288780555e+00
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
+nan
