@@ -63,8 +63,7 @@ class Nn:
         #input-->hidden--output_hidden
         hidden_result = self.feedforwardHidden(input)
         output = self.feedforwardOutput(hidden_result)
-        output = self.applyFunction(output,self.act)
-        print(self.act)
+        #output = self.applyFunction(output,self.act)
         return output
 #----------------------------------------------------------------------
     def mnistBenchmark(self,testSets,targets):
@@ -89,7 +88,6 @@ class Nn:
             testData = Nn.getColInd(testSets,i)           
             guess = self.feedforward(testData)
             err = (Nn.getColInd(targets,i) - guess)
-            print(Nn.getColInd(targets,i),guess)
             benchmark += Nn.getColInd(err,0)
             
         benchmark = benchmark/size
